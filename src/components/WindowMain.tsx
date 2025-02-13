@@ -1,3 +1,14 @@
+interface WindowMainProps {
+  text:string
+  pastText:string
+  currentLetter:string
+  futureText:string
+  speed:number
+  wrongLetters:number
+  accuracy:number
+  startTest:() => void
+}
+
 function WindowMain({
     text,
     pastText,
@@ -7,7 +18,7 @@ function WindowMain({
     wrongLetters,
     accuracy,
     startTest,
-}) {
+}: WindowMainProps) {
     return (
         <div className='window-main'>
             <div className='block-text'>
@@ -26,7 +37,7 @@ function WindowMain({
             <div className='block-info'>
                 <div className='speed'>
                     <h3>Скорость</h3>
-                    <h4>{Math.round(speed) == 'Infinity' ? 0 : Math.round(speed)} букв/сек</h4>
+                    <h4>{String(Math.round(speed)) == 'Infinity' ? 0 : Math.round(speed)} букв/сек</h4>
                 </div>
                 <div className='accuracy'>
                     <h3>Точность</h3>

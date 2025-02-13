@@ -8,7 +8,7 @@ import Keyboard from './components/keyboard'
 function App() {
     const [show, setShow] = useState(true)
     const [settingsHide, setSettingsHide] = useState(true)
-    const [mode, setMode] = useState(0)
+    const [mode, setMode] = useState<number>(0)
     const [speed, setSpeed] = useState(0)
     const [time, setTime] = useState(0)
     const [startTime, setStartTime] = useState(false)
@@ -17,7 +17,7 @@ function App() {
     const [pastText, setPastText] = useState('')
     const [futureText, setFutureText] = useState('')
     const [wrongLetters, setWrongLetters] = useState(0)
-    const intervalRef = useRef(null)
+    const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
     // Start test typing
     const getText = async () => {
@@ -27,15 +27,17 @@ function App() {
             setFutureText(randomText)
         }
         if (mode >= 1) {
-            let randomWords = await Promise.all(
-                Array(mode * 5)
-                    .fill(0)
-                    .map(async () => {
-                        const randomWord = await getRandomWord()
-                        return ` ${randomWord}`
-                    }),
+            let randomWords: string = String(
+                await Promise.all(
+                    Array(mode * 5)
+                        .fill(0)
+                        .map(async () => {
+                            const randomWord = await getRandomWord()
+                            return ` ${randomWord}`
+                        }),
+                ),
             )
-            randomWords = String(randomWords).replace(/,/g, '')
+            randomWords = randomWords.replace(/,/g, '')
             setText(randomWords.replace(' ', ''))
             setFutureText(randomWords.replace(' ', ''))
         }
@@ -47,7 +49,9 @@ function App() {
 
         setShow(false)
 
-        clearInterval(intervalRef.current)
+        if (intervalRef.current !== null) {
+            clearInterval(intervalRef.current)
+        }
         setStartTime(false)
         setSpeed(0)
         setTime(0)
@@ -72,7 +76,7 @@ function App() {
 
     // Описывание нажатия кнопок
     useEffect(() => {
-        const handleKeyPress = (event) => {
+        const handleKeyPress = (event: KeyboardEvent) => {
             // console.log(`Нажата клавиша: ${event.key}`,futureText.slice(0, 1), futureText.slice(1))
             if (event.key == 'Enter') {
                 document.body.querySelector('#currentLetter')?.classList.remove('wrong')
@@ -81,7 +85,9 @@ function App() {
             if (event.key.length == 1) {
                 if (futureText.length == 1) {
                     console.log('pobeda!')
-                    clearInterval(intervalRef.current)
+                    if (intervalRef.current !== null) {
+                        clearInterval(intervalRef.current)
+                    }
                 }
                 if (event.key == futureText.slice(0, 1)) {
                     document.body.querySelector('#currentLetter')?.classList.remove('wrong')
@@ -147,8 +153,8 @@ function App() {
                                 <select
                                     name='mode'
                                     id=''
-                                    onChange={(e) => setMode(e.target.value)}
-                                    value={parseInt(mode)}
+                                    onChange={(e) => setMode(parseInt(e.target.value))}
+                                    value={mode}
                                 >
                                     <option value={0}>Интересный факт (10-30 слов)</option>
                                     <option value={1}>Рандомные 5 слов</option>

@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react'
 import './style.scss'
 
 function Keyboard() {
-    const [pressedKeys, setPressedKeys] = useState({})
-    const [isCapsLock, setIsCapsLock] = useState(false)
+    const [pressedKeys, setPressedKeys] = useState<Record<string, boolean>>({})
 
     const keys = [
         'Ё',
@@ -80,16 +79,15 @@ function Keyboard() {
         '\\',
     ]
 
-    const handleKeyDown = (event) => {
+    const handleKeyDown = (event: KeyboardEvent) => {
         const key = `${event.location == 1 ? 'L ' : ''}${event.location == 2 ? 'R ' : ''}${
             event.key.toUpperCase() == 'CONTROL' ? 'CTRL' : event.key.toUpperCase()
         }${event.key == ' ' ? 'SPACE' : ''}`
 
-        setIsCapsLock(event.getModifierState('CapsLock'))
         setPressedKeys((prev) => ({ ...prev, [key]: true }))
     }
 
-    const handleKeyUp = (event) => {
+    const handleKeyUp = (event: KeyboardEvent) => {
         const key = `${event.location == 1 ? 'L ' : ''}${event.location == 2 ? 'R ' : ''}${
             event.key.toUpperCase() == 'CONTROL' ? 'CTRL' : event.key.toUpperCase()
         }${event.key == ' ' ? 'SPACE' : ''}`
