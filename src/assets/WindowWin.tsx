@@ -1,52 +1,28 @@
-interface WindowMainProps {
+interface WindowWinProps {
     text: string
-    pastText: string
-    currentLetter: string
-    futureText: string
     speed: number
-    wrongLetters: number
     accuracy: number
+    wrongLetters: number
     startTest: () => void
 }
 
-function WindowMain({
-    text,
-    pastText,
-    currentLetter,
-    futureText,
-    speed,
-    wrongLetters,
-    accuracy,
-    startTest,
-}: WindowMainProps) {
+function WindowWin({ text, speed, accuracy, wrongLetters, startTest }: WindowWinProps) {
     return (
-        <div className='window-main'>
-            <div className='block-text'>
-                <h4>
-                    <span className='past-text'>{pastText}</span>
-                    <span
-                        className='current-letter'
-                        id='currentLetter'
-                        style={{ textDecoration: 'underline' }}
-                    >
-                        {currentLetter}
-                    </span>
-                    <span className='future-text'>{futureText}</span>
-                </h4>
-            </div>
-            <div className='block-info'>
-                <div className='speed'>
+        <div className="window-win">
+            <h2>Тест закончен, ваши результаты:</h2>
+            <div className='block-info settings-bi'>
+                <div className='speed bie'>
                     <h3>Скорость</h3>
                     <h4>
                         {String(Math.round(speed)) == 'Infinity' ? 0 : Math.round(speed)} букв/сек
                     </h4>
                 </div>
-                <div className='accuracy'>
+                <div className='accuracy bie'>
                     <h3>Точность</h3>
                     <h4>{Math.round(accuracy)}%</h4>
                     <h4>{wrongLetters} ошибок</h4>
                 </div>
-                <div className='textLength'>
+                <div className='textLength bie'>
                     <h3>Длинна текста</h3>
                     <h4>
                         {text.length} букв
@@ -60,13 +36,13 @@ function WindowMain({
                         })()}
                     </h4>
                 </div>
-                <button className='restart' onClick={() => startTest()}>
-                    Перезапустить
-                </button>
             </div>
+            <button className='restart' onClick={() => startTest()}>
+                Новый тест
+            </button>
             <p className='help-text'>При нажатии Enter, появиться новый текст</p>
         </div>
     )
 }
 
-export default WindowMain
+export default WindowWin

@@ -4,10 +4,12 @@ import { getRandomText, getRandomWord } from './api'
 import Settings from './components/Settings'
 import WindowMain from './components/WindowMain'
 import Keyboard from './components/keyboard'
+import WindowWin from './assets/WindowWin'
 
 function App() {
     const [show, setShow] = useState(true)
     const [settingsHide, setSettingsHide] = useState(true)
+    const [windowWinHide, setWindowWinHide] = useState(true)
     const [mode, setMode] = useState<number>(0)
     const [speed, setSpeed] = useState(0)
     const [time, setTime] = useState(0)
@@ -17,7 +19,7 @@ function App() {
     const [pastText, setPastText] = useState('')
     const [futureText, setFutureText] = useState('')
     const [wrongLetters, setWrongLetters] = useState(0)
-    const intervalRef = useRef<NodeJS.Timeout | null>(null);
+    const intervalRef = useRef<NodeJS.Timeout | null>(null)
 
     // Start test typing
     const getText = async () => {
@@ -48,6 +50,7 @@ function App() {
         getText()
 
         setShow(false)
+        setWindowWinHide(true)
 
         if (intervalRef.current !== null) {
             clearInterval(intervalRef.current)
@@ -83,8 +86,9 @@ function App() {
                 startTest()
             }
             if (event.key.length == 1) {
+                setStartTime(true)
                 if (futureText.length == 1) {
-                    console.log('pobeda!')
+                    setWindowWinHide(false)
                     if (intervalRef.current !== null) {
                         clearInterval(intervalRef.current)
                     }
@@ -93,7 +97,6 @@ function App() {
                     document.body.querySelector('#currentLetter')?.classList.remove('wrong')
                     setPastText(pastText + futureText.slice(0, 1))
                     setFutureText(futureText.slice(1))
-                    setStartTime(true)
                     // console.log('right letter pressed', futureText.length)
                 } else {
                     document.body.querySelector('#currentLetter')?.classList.add('wrong')
@@ -142,35 +145,49 @@ function App() {
                     onClick={() => {
                         setShow(true)
                         setSettingsHide(true)
+                        setWindowWinHide(true)
                     }}
                 />
                 {settingsHide && (
                     <>
-                        {show ? (
-                            <div className='window-start'>
-                                <img src='' alt='' />
-                                <h2>Приготовьте к набору текста. Go go go!</h2>
-                                <select
-                                    name='mode'
-                                    id=''
-                                    onChange={(e) => setMode(parseInt(e.target.value))}
-                                    value={mode}
-                                >
-                                    <option value={0}>Интересный факт (10-30 слов)</option>
-                                    <option value={1}>Рандомные 5 слов</option>
-                                    <option value={2}>Рандомные 10 слов</option>
-                                    <option value={3}>Рандомные 15 слов</option>
-                                </select>
-                                <button className='start' onClick={() => startTest()}>
-                                    Начать тест
-                                </button>
-                            </div>
+                        {windowWinHide ? (
+                            <>
+                                {show ? (
+                                    <div className='window-start'>
+                                        <img src='' alt='' />
+                                        <h2>Приготовьте к набору текста. Go go go!</h2>
+                                        <select
+                                            name='mode'
+                                            id=''
+                                            onChange={(e) => setMode(parseInt(e.target.value))}
+                                            value={mode}
+                                        >
+                                            <option value={0}>Интересный факт (10-30 слов)</option>
+                                            <option value={1}>Рандомные 5 слов</option>
+                                            <option value={2}>Рандомные 10 слов</option>
+                                            <option value={3}>Рандомные 15 слов</option>
+                                        </select>
+                                        <button className='start' onClick={() => startTest()}>
+                                            Начать тест
+                                        </button>
+                                        <p className='help-text'>База данных из 1.5кк+ слов, 100 различных интересных фактов. Сделано @SuBtItRi - TG</p>
+                                    </div>
+                                ) : (
+                                    <WindowMain
+                                        text={text}
+                                        pastText={pastText}
+                                        currentLetter={futureText.slice(0, 1)}
+                                        futureText={futureText.slice(1)}
+                                        speed={speed}
+                                        accuracy={accuracy}
+                                        wrongLetters={wrongLetters}
+                                        startTest={startTest}
+                                    />
+                                )}
+                            </>
                         ) : (
-                            <WindowMain
+                            <WindowWin
                                 text={text}
-                                pastText={pastText}
-                                currentLetter={futureText.slice(0, 1)}
-                                futureText={futureText.slice(1)}
                                 speed={speed}
                                 accuracy={accuracy}
                                 wrongLetters={wrongLetters}
@@ -181,6 +198,7 @@ function App() {
                 )}
                 <Settings text={text} show={show} settingsHide={settingsHide} />
             </div>
+
             <Keyboard />
         </main>
     )

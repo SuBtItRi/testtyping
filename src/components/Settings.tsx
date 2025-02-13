@@ -17,7 +17,7 @@ function Settings({
     useEffect(() => {
         const elements = document.querySelectorAll('.block-text')
         elements.forEach((element) => {
-          (element as HTMLElement).style.letterSpacing = `${letterSpacing}`
+            ;(element as HTMLElement).style.letterSpacing = `${letterSpacing}`
         })
         localStorage.setItem('letterSpacing', letterSpacing)
     }, [letterSpacing, show, settingsHide])
@@ -25,7 +25,7 @@ function Settings({
     useEffect(() => {
         const elements = document.querySelectorAll('.block-text')
         elements.forEach((element) => {
-            (element as HTMLElement).style.fontSize = `${fontSize}`
+            ;(element as HTMLElement).style.fontSize = `${fontSize}`
         })
         localStorage.setItem('fontSize', fontSize)
     }, [fontSize, show, settingsHide])
