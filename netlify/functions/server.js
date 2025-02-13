@@ -1,13 +1,13 @@
-const jsonServer = require('json-server');
-const server = jsonServer.create();
+import { create, router as _router, defaults } from 'json-server';
+const server = create();
 const db = {
   ...require('./db.json'), // Загружаем db.json
   ...require('./words.json') // Загружаем words.json
 };
-const router = jsonServer.router(db); // Используем объединенные данные
-const middlewares = jsonServer.defaults();
+const router = _router(db); // Используем объединенные данные
+const middlewares = defaults();
 
 server.use(middlewares);
 server.use(router);
 
-exports.handler = server;
+export const handler = server;
