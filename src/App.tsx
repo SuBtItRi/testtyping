@@ -129,7 +129,7 @@ function App() {
         <main>
             <div className='container'>
                 <img
-                    src='/settings.svg'
+                    src='/assets/settings.svg'
                     alt=''
                     className='settings-icon'
                     onClick={() => {
@@ -138,7 +138,7 @@ function App() {
                     }}
                 />
                 <img
-                    src='/back.svg'
+                    src='/assets/back.svg'
                     alt=''
                     className='back-btn'
                     style={settingsHide && show ? { display: 'none' } : { display: 'flex' }}
