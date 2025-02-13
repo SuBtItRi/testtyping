@@ -3,8 +3,19 @@ const path = require('path');
 
 exports.handler = async (event) => {
     try {
-        // Чтение db.json
+        // Путь к db.json
         const dbPath = path.join(__dirname, '../db.json');
+
+        // Проверка существования файла
+        if (!fs.existsSync(dbPath)) {
+            console.error('Файл db.json не найден');
+            return {
+                statusCode: 500,
+                body: JSON.stringify({ error: 'Файл db.json не найден' }),
+            };
+        }
+
+        // Чтение db.json
         const data = fs.readFileSync(dbPath, 'utf-8');
         const db = JSON.parse(data);
 
@@ -26,6 +37,7 @@ exports.handler = async (event) => {
             };
         }
     } catch (error) {
+        console.error('Ошибка:', error);
         return {
             statusCode: 500,
             body: JSON.stringify({ error: 'Ошибка сервера' }),
