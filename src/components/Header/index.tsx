@@ -4,7 +4,7 @@ function index() {
     return (
         <header className='header'>
             <div className='header_container'>
-                <p className='header_title'>test typing by SuBtItRi</p>
+                <p className='header_title'>test speed text typing by SuBtItRi</p>
             </div>
         </header>
     )
