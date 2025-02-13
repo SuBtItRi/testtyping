@@ -38,7 +38,7 @@ function WindowMain({
                 <div className='speed'>
                     <h3>Скорость</h3>
                     <h4>
-                        {String(Math.round(speed)) == 'Infinity' ? 0 : Math.round(speed)} букв/сек
+                        {String(Math.round(speed)) == 'Infinity' ? 0 : Math.round(speed)} букв/мин
                     </h4>
                 </div>
                 <div className='accuracy'>
